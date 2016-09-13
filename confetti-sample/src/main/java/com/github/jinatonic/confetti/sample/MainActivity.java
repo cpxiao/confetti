@@ -77,7 +77,9 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        listView.setAdapter(adapter);
+        if (listView != null) {
+            listView.setAdapter(adapter);
+        }
     }
 
     private static class ConfettiSample {

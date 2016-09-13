@@ -16,16 +16,16 @@
 
 package com.github.jinatonic.confetti;
 
-import com.github.jinatonic.confetti.confetto.Confetto;
+import com.github.jinatonic.confetti.confetti.Confetti;
 
 import java.util.Random;
 
-public interface ConfettoGenerator {
+public interface ConfettiGenerator {
     /**
      * Generate a random confetto to animate.
      *
      * @param random a {@link Random} that can be used to generate random confetto.
      * @return the randomly generated confetto.
      */
-    Confetto generateConfetto(Random random);
+    Confetti generateConfetti(Random random);
 }

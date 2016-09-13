@@ -14,38 +14,46 @@
  * limitations under the License.
  */
 
-package com.github.jinatonic.confetti.confetto;
+package com.github.jinatonic.confetti.confetti;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 
-public class BitmapConfetto extends Confetto {
-    private final Bitmap bitmap;
-    private final float bitmapCenterX, bitmapCenterY;
+/**
+ * A lightly more optimal way to draw a circle shape that doesn't require the use of a bitmap.
+ */
+public class CircleConfetti extends Confetti {
+    private final int color;
+    private final float radius;
+    private final int diameter;
 
-    public BitmapConfetto(Bitmap bitmap) {
-        this.bitmap = bitmap;
-        this.bitmapCenterX = bitmap.getWidth() / 2f;
-        this.bitmapCenterY = bitmap.getHeight() / 2f;
+    public CircleConfetti(int color, float radius) {
+        this.color = color;
+        this.radius = radius;
+        this.diameter = (int) (this.radius * 2);
     }
 
     @Override
     public int getWidth() {
-        return bitmap.getWidth();
+        return diameter;
     }
 
     @Override
     public int getHeight() {
-        return bitmap.getHeight();
+        return diameter;
+    }
+
+    @Override
+    protected void configurePaint(Paint paint) {
+        super.configurePaint(paint);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(color);
     }
 
     @Override
     protected void drawInternal(Canvas canvas, Matrix matrix, Paint paint, float x, float y,
             float rotation) {
-        matrix.preTranslate(x, y);
-        matrix.preRotate(rotation, bitmapCenterX, bitmapCenterY);
-        canvas.drawBitmap(bitmap, matrix, paint);
+        canvas.drawCircle(x + radius, y + radius, radius, paint);
     }
 }

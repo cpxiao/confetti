@@ -5,15 +5,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import com.github.jinatonic.confetti.ConfettiGenerator;
 import com.github.jinatonic.confetti.ConfettiManager;
 import com.github.jinatonic.confetti.ConfettiSource;
-import com.github.jinatonic.confetti.ConfettoGenerator;
-import com.github.jinatonic.confetti.confetto.BitmapConfetto;
-import com.github.jinatonic.confetti.confetto.Confetto;
+import com.github.jinatonic.confetti.confetti.BitmapConfetti;
+import com.github.jinatonic.confetti.confetti.Confetti;
 
 import java.util.Random;
 
-public class FallingWithTouchActivity extends AbstractActivity implements ConfettoGenerator {
+public class FallingWithTouchActivity extends AbstractActivity implements ConfettiGenerator {
     private int size;
     private int velocitySlow, velocityNormal;
     private Bitmap bitmap;
@@ -64,7 +64,7 @@ public class FallingWithTouchActivity extends AbstractActivity implements Confet
     }
 
     @Override
-    public Confetto generateConfetto(Random random) {
-        return new BitmapConfetto(bitmap);
+    public Confetti generateConfetti(Random random) {
+        return new BitmapConfetti(bitmap);
     }
 }

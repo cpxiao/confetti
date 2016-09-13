@@ -44,10 +44,10 @@ More custom usage
 -----------------
 
 First, we need to define what our individual [confetto](http://www.dictionary.com/browse/confetto)
-is through the `ConfettoGenerator`. Each call of `generateConfetto` must generate a brand new
+is through the `ConfettoGenerator`. Each call of `generateConfetti` must generate a brand new
 `Confetto` object (the `ConfettiManager` will recycle the generated confetto as needed so you
-might see fewer and fewer calls to `generateConfetto` as the animation goes on). We pass in a
-`Random` into `generateConfetto` in case you want to randomly generate a confetto from a list
+might see fewer and fewer calls to `generateConfetti` as the animation goes on). We pass in a
+`Random` into `generateConfetti` in case you want to randomly generate a confetto from a list
 of possible confetti.
 
 A simple `ConfettoGenerator` might look like this:
@@ -59,9 +59,9 @@ final List<Bitmap> allPossibleConfetti = constructBitmapsForConfetti();
 // Utils.generateConfettiBitmaps(new int[] { Color.BLACK }, 20 /* size */);
 
 final int numConfetti = allPossibleConfetti.size();
-final ConfettoGenerator confettoGenerator = new ConfettoGenerator() {
+final ConfettoGenerator confettiGenerator = new ConfettoGenerator() {
     @Override
-    public Confetto generateConfetto(Random random) {
+    public Confetto generateConfetti(Random random) {
         final Bitmap bitmap = allPossibleConfetti.get(random.nextInt(numConfetti));
         return new BitmapConfetto(bitmap);
     }
@@ -81,7 +81,7 @@ Now you are ready! construct your `ConfettiManager`, configure the animation to 
 then call `animate()`!
 
 ```java
-new ConfettiManager(context, confettoGenerator, confettiSource, container)
+new ConfettiManager(context, confettiGenerator, confettiSource, container)
         .setEmissionDuration(1000)
         .setEmissionRate(100)
         .setVelocityX(20, 10)

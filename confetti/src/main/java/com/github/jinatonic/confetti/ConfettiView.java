@@ -25,21 +25,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.github.jinatonic.confetti.confetto.Confetto;
+import com.github.jinatonic.confetti.confetti.Confetti;
 
 import java.util.List;
 
 /**
- * A helper temporary view that helps render the confetti. This view will attach itself to the
- * view root, perform the animation, and then once all of the confetti has completed its animation,
+ * A helper temporary view that helps render the mConfettiList. This view will attach itself to the
+ * view root, perform the animation, and then once all of the mConfettiList has completed its animation,
  * it will automatically remove itself from the parent.
  */
 public class ConfettiView extends View implements View.OnLayoutChangeListener {
-    private List<Confetto> confetti;
+    private List<Confetti> mConfettiList;
     private boolean terminated;
 
     private boolean touchEnabled;
-    private Confetto draggedConfetto;
+    private Confetti draggedConfetti;
 
     public static ConfettiView newInstance(Context context) {
         final ConfettiView confettiView = new ConfettiView(context, null);
@@ -60,12 +60,12 @@ public class ConfettiView extends View implements View.OnLayoutChangeListener {
     }
 
     /**
-     * Sets the list of confetti to be animated by this view.
+     * Sets the list of mConfettiList to be animated by this view.
      *
-     * @param confetti the list of confetti to be animated.
+     * @param confetti the list of mConfettiList to be animated.
      */
-    public void bind(List<Confetto> confetti) {
-        this.confetti = confetti;
+    public void bind(List<Confetti> confetti) {
+        this.mConfettiList = confetti;
     }
 
     /**
@@ -88,7 +88,7 @@ public class ConfettiView extends View implements View.OnLayoutChangeListener {
     }
 
     /**
-     * Reset the internal state of this view to allow for a new confetti animation.
+     * Reset the internal state of this view to allow for a new mConfettiList animation.
      */
     public void reset() {
         this.terminated = false;
@@ -103,7 +103,7 @@ public class ConfettiView extends View implements View.OnLayoutChangeListener {
 
         // If we did not bind before attaching to the window, that means this ConfettiView no longer
         // has a ConfettiManager backing it and should just be terminated.
-        if (confetti == null) {
+        if (mConfettiList == null) {
             terminate();
         }
     }
@@ -128,8 +128,8 @@ public class ConfettiView extends View implements View.OnLayoutChangeListener {
 
         if (!terminated) {
             canvas.save();
-            for (Confetto confetto : this.confetti) {
-                confetto.draw(canvas);
+            for (Confetti confetti : this.mConfettiList) {
+                confetti.draw(canvas);
             }
             canvas.restore();
         }
@@ -141,25 +141,25 @@ public class ConfettiView extends View implements View.OnLayoutChangeListener {
         if (touchEnabled) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    for (Confetto confetto : confetti) {
-                        if (confetto.onTouchDown(event)) {
-                            draggedConfetto = confetto;
+                    for (Confetti confetti : this.mConfettiList) {
+                        if (confetti.onTouchDown(event)) {
+                            draggedConfetti = confetti;
                             handled = true;
                             break;
                         }
                     }
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    if (draggedConfetto != null) {
-                        draggedConfetto.onTouchMove(event);
+                    if (draggedConfetti != null) {
+                        draggedConfetti.onTouchMove(event);
                         handled = true;
                     }
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    if (draggedConfetto != null) {
-                        draggedConfetto.onTouchUp(event);
-                        draggedConfetto = null;
+                    if (draggedConfetti != null) {
+                        draggedConfetti.onTouchUp(event);
+                        draggedConfetti = null;
                         handled = true;
                     }
                     break;

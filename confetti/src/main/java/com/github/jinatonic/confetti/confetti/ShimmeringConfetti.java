@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jinatonic.confetti.confetto;
+package com.github.jinatonic.confetti.confetti;
 
 import android.animation.ArgbEvaluator;
 import android.graphics.Bitmap;
@@ -28,14 +28,14 @@ import android.os.SystemClock;
 
 import java.util.Random;
 
-public class ShimmeringConfetto extends BitmapConfetto {
+public class ShimmeringConfetti extends BitmapConfetti {
     private final ArgbEvaluator evaluator = new ArgbEvaluator();
     private final int fromColor, toColor;
     private final long waveLength, halfWaveLength;
     private final long randomStart;
 
-    public ShimmeringConfetto(Bitmap bitmap, int fromColor, int toColor, long waveLength,
-            Random random) {
+    public ShimmeringConfetti(Bitmap bitmap, int fromColor, int toColor, long waveLength,
+                              Random random) {
         super(bitmap);
         this.fromColor = fromColor;
         this.toColor = toColor;

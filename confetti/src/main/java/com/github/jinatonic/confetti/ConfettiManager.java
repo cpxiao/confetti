@@ -24,7 +24,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.animation.Interpolator;
 
-import com.github.jinatonic.confetti.confetto.Confetto;
+import com.github.jinatonic.confetti.confetti.Confetti;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -40,13 +40,13 @@ public class ConfettiManager {
     public static final long INFINITE_DURATION = Long.MAX_VALUE;
 
     private final Random random = new Random();
-    private final ConfettoGenerator confettoGenerator;
+    private final ConfettiGenerator mConfettiGenerator;
     private final ConfettiSource confettiSource;
     private final ViewGroup parentView;
     private final ConfettiView confettiView;
 
-    private final Queue<Confetto> recycledConfetti = new LinkedList<>();
-    private final List<Confetto> confetti = new ArrayList<>(300);
+    private final Queue<Confetti> recycledConfetti = new LinkedList<>();
+    private final List<Confetti> confetti = new ArrayList<>(300);
     private ValueAnimator animator;
     private long lastEmittedTimestamp;
 
@@ -61,7 +61,7 @@ public class ConfettiManager {
     private Interpolator fadeOutInterpolator;
     private Rect bound;
 
-    // Configured attributes for each confetto
+    // Configured attributes for each confetti
     private float velocityX, velocityDeviationX;
     private float velocityY, velocityDeviationY;
     private float accelerationX, accelerationDeviationX;
@@ -74,14 +74,14 @@ public class ConfettiManager {
     private Float targetRotationalVelocity, targetRotationalVelocityDeviation;
     private long ttl;
 
-    public ConfettiManager(Context context, ConfettoGenerator confettoGenerator,
+    public ConfettiManager(Context context, ConfettiGenerator confettiGenerator,
             ConfettiSource confettiSource, ViewGroup parentView) {
-        this(confettoGenerator, confettiSource, parentView, ConfettiView.newInstance(context));
+        this(confettiGenerator, confettiSource, parentView, ConfettiView.newInstance(context));
     }
 
-    public ConfettiManager(ConfettoGenerator confettoGenerator,
+    public ConfettiManager(ConfettiGenerator confettiGenerator,
             ConfettiSource confettiSource, ViewGroup parentView, ConfettiView confettiView) {
-        this.confettoGenerator = confettoGenerator;
+        this.mConfettiGenerator = confettiGenerator;
         this.confettiSource = confettiSource;
         this.parentView = parentView;
         this.confettiView = confettiView;
@@ -487,7 +487,7 @@ public class ConfettiManager {
         }
 
         lastEmittedTimestamp = 0;
-        final Iterator<Confetto> iterator = confetti.iterator();
+        final Iterator<Confetti> iterator = confetti.iterator();
         while (iterator.hasNext()) {
             recycledConfetti.add(iterator.next());
             iterator.remove();
@@ -510,12 +510,12 @@ public class ConfettiManager {
 
     private void addNewConfetti(int numConfetti, long initialDelay) {
         for (int i = 0; i < numConfetti; i++) {
-            Confetto confetto = recycledConfetti.poll();
-            if (confetto == null) {
-                confetto = confettoGenerator.generateConfetto(random);
+            Confetti confetti = recycledConfetti.poll();
+            if (confetti == null) {
+                confetti = mConfettiGenerator.generateConfetti(random);
             }
-            configureConfetto(confetto, confettiSource, random, initialDelay);
-            this.confetti.add(confetto);
+            configureConfetti(confetti, confettiSource, random, initialDelay);
+            this.confetti.add(confetti);
         }
     }
 
@@ -560,44 +560,44 @@ public class ConfettiManager {
     }
 
     private void updateConfetti(long elapsedTime) {
-        final Iterator<Confetto> iterator = confetti.iterator();
+        final Iterator<Confetti> iterator = confetti.iterator();
         while (iterator.hasNext()) {
-            final Confetto confetto = iterator.next();
-            if (!confetto.applyUpdate(elapsedTime)) {
+            final Confetti confetti = iterator.next();
+            if (!confetti.applyUpdate(elapsedTime)) {
                 iterator.remove();
-                recycledConfetti.add(confetto);
+                recycledConfetti.add(confetti);
             }
         }
     }
 
-    private void configureConfetto(Confetto confetto, ConfettiSource confettiSource,
-            Random random, long initialDelay) {
-        confetto.reset();
+    private void configureConfetti(Confetti confetti, ConfettiSource confettiSource,
+                                   Random random, long initialDelay) {
+        confetti.reset();
 
-        confetto.setInitialDelay(initialDelay);
-        confetto.setInitialX(confettiSource.getInitialX(random.nextFloat()));
-        confetto.setInitialY(confettiSource.getInitialY(random.nextFloat()));
-        confetto.setInitialVelocityX(getVarianceAmount(velocityX, velocityDeviationX, random));
-        confetto.setInitialVelocityY(getVarianceAmount(velocityY, velocityDeviationY, random));
-        confetto.setAccelerationX(getVarianceAmount(accelerationX, accelerationDeviationX, random));
-        confetto.setAccelerationY(getVarianceAmount(accelerationY, accelerationDeviationY, random));
-        confetto.setTargetVelocityX(targetVelocityX == null ? null
+        confetti.setInitialDelay(initialDelay);
+        confetti.setInitialX(confettiSource.getInitialX(random.nextFloat()));
+        confetti.setInitialY(confettiSource.getInitialY(random.nextFloat()));
+        confetti.setInitialVelocityX(getVarianceAmount(velocityX, velocityDeviationX, random));
+        confetti.setInitialVelocityY(getVarianceAmount(velocityY, velocityDeviationY, random));
+        confetti.setAccelerationX(getVarianceAmount(accelerationX, accelerationDeviationX, random));
+        confetti.setAccelerationY(getVarianceAmount(accelerationY, accelerationDeviationY, random));
+        confetti.setTargetVelocityX(targetVelocityX == null ? null
                 : getVarianceAmount(targetVelocityX, targetVelocityXDeviation, random));
-        confetto.setTargetVelocityY(targetVelocityY == null ? null
+        confetti.setTargetVelocityY(targetVelocityY == null ? null
                 : getVarianceAmount(targetVelocityY, targetVelocityYDeviation, random));
-        confetto.setInitialRotation(
+        confetti.setInitialRotation(
                 getVarianceAmount(initialRotation, initialRotationDeviation, random));
-        confetto.setInitialRotationalVelocity(
+        confetti.setInitialRotationalVelocity(
                 getVarianceAmount(rotationalVelocity, rotationalVelocityDeviation, random));
-        confetto.setRotationalAcceleration(
+        confetti.setRotationalAcceleration(
                 getVarianceAmount(rotationalAcceleration, rotationalAccelerationDeviation, random));
-        confetto.setTargetRotationalVelocity(targetRotationalVelocity == null ? null
+        confetti.setTargetRotationalVelocity(targetRotationalVelocity == null ? null
                 : getVarianceAmount(targetRotationalVelocity, targetRotationalVelocityDeviation,
                         random));
-        confetto.setTTL(ttl);
-        confetto.setFadeOut(fadeOutInterpolator);
+        confetti.setTTL(ttl);
+        confetti.setFadeOut(fadeOutInterpolator);
 
-        confetto.prepare(bound);
+        confetti.prepare(bound);
     }
 
     private float getVarianceAmount(float base, float deviation, Random random) {

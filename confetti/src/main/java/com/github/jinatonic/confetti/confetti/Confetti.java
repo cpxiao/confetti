@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jinatonic.confetti.confetto;
+package com.github.jinatonic.confetti.confetti;
 
 import android.graphics.Canvas;
 import android.graphics.Matrix;
@@ -30,7 +30,7 @@ import android.view.animation.Interpolator;
  *
  * <p>All of the configured states are in milliseconds, e.g. pixels per millisecond for velocity.
  */
-public abstract class Confetto {
+public abstract class Confetti {
     private static final int MAX_ALPHA = 255;
     private static final long RESET_ANIMATION_INITIAL_DELAY = -1;
 

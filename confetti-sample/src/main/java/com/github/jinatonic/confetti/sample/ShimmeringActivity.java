@@ -23,18 +23,18 @@ import android.os.Bundle;
 
 import com.github.jinatonic.confetti.ConfettiManager;
 import com.github.jinatonic.confetti.ConfettiSource;
-import com.github.jinatonic.confetti.ConfettoGenerator;
+import com.github.jinatonic.confetti.ConfettiGenerator;
 import com.github.jinatonic.confetti.Utils;
-import com.github.jinatonic.confetti.confetto.Confetto;
-import com.github.jinatonic.confetti.confetto.ShimmeringConfetto;
+import com.github.jinatonic.confetti.confetti.Confetti;
+import com.github.jinatonic.confetti.confetti.ShimmeringConfetti;
 
 import java.util.List;
 import java.util.Random;
 
-public class ShimmeringActivity extends AbstractActivity implements ConfettoGenerator {
+public class ShimmeringActivity extends AbstractActivity implements ConfettiGenerator {
     private int size;
     private int velocitySlow, velocityNormal;
-    private List<Bitmap> confettoBitmaps;
+    private List<Bitmap> confettiBitmaps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class ShimmeringActivity extends AbstractActivity implements ConfettoGene
 
         // The color here doesn't matter, it's simply needed to generate the bitmaps
         final int[] colors = { Color.BLACK };
-        confettoBitmaps = Utils.generateConfettiBitmaps(colors, size);
+        confettiBitmaps = Utils.generateConfettiBitmaps(colors, size);
     }
 
     @Override
@@ -85,9 +85,9 @@ public class ShimmeringActivity extends AbstractActivity implements ConfettoGene
     }
 
     @Override
-    public Confetto generateConfetto(Random random) {
-        return new ShimmeringConfetto(
-                confettoBitmaps.get(random.nextInt(confettoBitmaps.size())),
+    public Confetti generateConfetti(Random random) {
+        return new ShimmeringConfetti(
+                confettiBitmaps.get(random.nextInt(confettiBitmaps.size())),
                 goldLight, goldDark, 1000, random);
     }
 }
